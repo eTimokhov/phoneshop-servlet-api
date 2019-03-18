@@ -48,4 +48,8 @@ public class ProductListPageServlet extends HttpServlet {
 
         return result;
     }
+
+    public void setProductDao(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 }
