@@ -1,24 +1,45 @@
 package com.es.phoneshop.model.product;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
 
     private List<Product> products = new ArrayList<>();
+    private Predicate<Product> isProductCorrect = p -> p.getPrice() != null && p.getStock() > 0;
 
     @Override
     public synchronized Product getProduct(Long id) {
-        Optional<Product> product = products.stream().filter(p -> p.getId().equals(id)).findFirst();
-        return product.orElse(null);
+        return products.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public synchronized List<Product> findProducts() {
-        return products.stream().filter(p -> p.getPrice() != null && p.getStock() > 0)
+        return products.stream()
+                .filter(isProductCorrect)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public synchronized List<Product> findProducts(String query) {
+        if (query == null || query.trim().isEmpty())
+            return findProducts();
+
+        String[] keywords = query.toLowerCase().split(" ");
+        ToIntFunction<Product> getNumberOfMatches = product -> (int) Arrays.stream(keywords)
+                .filter(product.getDescription().toLowerCase()::contains)
+                .count();
+
+        return products.stream()
+                .filter(isProductCorrect)
+                .filter(product -> Arrays.stream(keywords).anyMatch(product.getDescription().toLowerCase()::contains))
+                .sorted(Comparator.comparingInt(getNumberOfMatches).reversed())
                 .collect(Collectors.toList());
     }
 
