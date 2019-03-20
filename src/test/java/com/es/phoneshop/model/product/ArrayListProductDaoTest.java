@@ -23,10 +23,8 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testFindProductsWithResults() {
-        Product product = new Product();
+        Product product = getCorrectProduct();
         product.setId(1L);
-        product.setPrice(BigDecimal.ONE);
-        product.setStock(1);
         productDao.save(product);
         assertEquals(1, productDao.findProducts().size());
     }
@@ -50,15 +48,11 @@ public class ArrayListProductDaoTest
 
     @Test
     public void testAddTwoProductsWithSameId() {
-        Product product1 = new Product();
+        Product product1 = getCorrectProduct();
         product1.setId(1L);
-        product1.setPrice(BigDecimal.ONE);
-        product1.setStock(1);
         productDao.save(product1);
-        Product product2 = new Product();
+        Product product2 = getCorrectProduct();
         product2.setId(1L);
-        product2.setPrice(BigDecimal.ONE);
-        product2.setStock(1);
         productDao.save(product2);
         assertEquals(1, productDao.findProducts().size());
     }
@@ -77,5 +71,12 @@ public class ArrayListProductDaoTest
         product.setStock(1);
         productDao.save(product);
         assertEquals(0, productDao.findProducts().size());
+    }
+
+    private Product getCorrectProduct() {
+        Product product = new Product();
+        product.setStock(1);
+        product.setPrice(BigDecimal.ONE);
+        return product;
     }
 }
