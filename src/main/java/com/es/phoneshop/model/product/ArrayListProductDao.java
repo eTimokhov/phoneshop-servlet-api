@@ -18,14 +18,12 @@ public class ArrayListProductDao implements ProductDao {
                 .findFirst()
                 .orElse(null);
     }
-
     @Override
     public synchronized List<Product> findProducts() {
         return products.stream()
                 .filter(isProductCorrect)
                 .collect(Collectors.toList());
     }
-
     @Override
     public synchronized List<Product> findProducts(String query) {
         if (query == null || query.trim().isEmpty())
@@ -44,6 +42,31 @@ public class ArrayListProductDao implements ProductDao {
     }
 
     @Override
+    public synchronized List<Product> findProducts(String query, String sortBy, boolean ascending) {
+        List<Product> products = findProducts(query);
+        if (sortBy == null)
+            return products;
+
+        Comparator<Product> productComparator = null;
+        switch (sortBy) {
+            case "description":
+                productComparator = Comparator.comparing(Product::getDescription, Comparator.comparing(String::toLowerCase));
+                break;
+            case "price":
+                productComparator = Comparator.comparing(Product::getPrice);
+                break;
+        }
+        if (productComparator == null)
+            return products;
+
+        if (!ascending)
+            productComparator = productComparator.reversed();
+
+        products.sort(productComparator);
+        return products;
+    }
+
+    @Override
     public synchronized void save(Product product) {
         if (product != null && products.stream().noneMatch(p -> p.getId().equals(product.getId())))
             products.add(product);
@@ -53,4 +76,5 @@ public class ArrayListProductDao implements ProductDao {
     public synchronized void delete(Long id) {
         products.removeIf(p -> p.getId().equals(id));
     }
+
 }

@@ -35,8 +35,13 @@ public class ProductListPageServletTest {
 
     @Before
     public void setup(){
+        String query = "iphone 6";
+        String sortBy = "price";
+
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        when(productDao.findProducts(any())).thenReturn(products);
+        when(request.getParameter("query")).thenReturn(query);
+        when(request.getParameter("sortBy")).thenReturn(sortBy);
+        when(productDao.findProducts(eq(query), eq(sortBy), anyBoolean())).thenReturn(products);
         servlet.setProductDao(productDao);
     }
 

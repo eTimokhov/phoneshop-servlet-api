@@ -16,8 +16,14 @@
     <thead>
       <tr>
         <td>Image</td>
-        <td>Description</td>
-        <td class="price">Price</td>
+        <td>Description
+          <a href="?query=${param.query}&sortBy=description&order=asc">asc</a>
+          <a href="?query=${param.query}&sortBy=description&order=desc">desc</a>
+        </td>
+        <td class="price">Price
+          <a href="?query=${param.query}&sortBy=price&order=asc">asc</a>
+          <a href="?query=${param.query}&sortBy=price&order=desc">desc</a>
+        </td>
       </tr>
     </thead>
     <c:forEach var="product" items="${products}">
