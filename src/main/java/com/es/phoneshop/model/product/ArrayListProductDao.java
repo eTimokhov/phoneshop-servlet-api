@@ -1,19 +1,23 @@
 package com.es.phoneshop.model.product;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
 
-    private static final ArrayListProductDao instance = new ArrayListProductDao();
+    private static ArrayListProductDao instance;
 
     private List<Product> products = new ArrayList<>();
     private Predicate<Product> isProductCorrect = p -> p.getPrice() != null && p.getStock() > 0;
 
-    public static ArrayListProductDao getInstance() {
+    public static synchronized ArrayListProductDao getInstance() {
+        if (instance == null)
+            instance = new ArrayListProductDao();
         return instance;
     }
 

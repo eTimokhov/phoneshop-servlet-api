@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductListPageServletTest {
+public class ProductDetailsPageServletTest {
     @Mock
     private HttpServletRequest request;
     @Mock
@@ -30,18 +30,15 @@ public class ProductListPageServletTest {
     @Mock
     private ProductDao productDao;
 
-    private ProductListPageServlet servlet = new ProductListPageServlet();
-    private List<Product> products;
+    private ProductDetailsPageServlet servlet = new ProductDetailsPageServlet();
+    private Product product;
 
     @Before
     public void setup() {
-        String query = "iphone 6";
-        String sortBy = "price";
-
+        product = new Product();
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        when(request.getParameter("query")).thenReturn(query);
-        when(request.getParameter("sortBy")).thenReturn(sortBy);
-        when(productDao.findProducts(eq(query), eq(sortBy), anyBoolean())).thenReturn(products);
+        when(request.getPathInfo()).thenReturn("/2");
+        when(productDao.getProduct(anyLong())).thenReturn(product);
         servlet.setProductDao(productDao);
     }
 
@@ -52,8 +49,8 @@ public class ProductListPageServletTest {
     }
 
     @Test
-    public void testSetProductList() throws ServletException, IOException {
+    public void testSetProduct() throws ServletException, IOException {
         servlet.doGet(request, response);
-        verify(request).setAttribute("products", products);
+        verify(request).setAttribute("product", product);
     }
 }
