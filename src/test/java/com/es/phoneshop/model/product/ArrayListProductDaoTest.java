@@ -1,20 +1,27 @@
 package com.es.phoneshop.model.product;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class ArrayListProductDaoTest
 {
-    private ProductDao productDao;
+    private static ArrayListProductDao productDao;
+
+    @BeforeClass
+    public static void initProductDao() {
+        productDao = ArrayListProductDao.getInstance();
+    }
 
     @Before
     public void setup() {
-        productDao = new ArrayListProductDao();
+        productDao.setProducts(new ArrayList<>());
     }
 
     @Test

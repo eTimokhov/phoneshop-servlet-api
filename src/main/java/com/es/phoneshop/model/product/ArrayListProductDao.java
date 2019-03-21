@@ -8,8 +8,17 @@ import java.util.stream.Collectors;
 
 public class ArrayListProductDao implements ProductDao {
 
+    private static final ArrayListProductDao instance = new ArrayListProductDao();
+
     private List<Product> products = new ArrayList<>();
     private Predicate<Product> isProductCorrect = p -> p.getPrice() != null && p.getStock() > 0;
+
+    public static ArrayListProductDao getInstance() {
+        return instance;
+    }
+
+    private ArrayListProductDao() {
+    }
 
     @Override
     public synchronized Product getProduct(Long id) {
@@ -77,4 +86,7 @@ public class ArrayListProductDao implements ProductDao {
         products.removeIf(p -> p.getId().equals(id));
     }
 
+    public synchronized void setProducts(List<Product> products) {
+        this.products = products;
+    }
 }
