@@ -19,10 +19,6 @@ public class ProductDetailsPageServlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
         long productId = Long.parseLong(pathInfo.substring(1));
         Product product = productDao.getProduct(productId);
-        if (product == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product with id " + productId + " not found");
-            return;
-        }
         request.setAttribute("product", product);
         request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
     }
