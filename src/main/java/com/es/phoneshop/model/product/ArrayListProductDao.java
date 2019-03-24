@@ -13,11 +13,12 @@ public class ArrayListProductDao implements ProductDao {
     private static ArrayListProductDao instance;
 
     private List<Product> products = new ArrayList<>();
-    private Predicate<Product> isProductCorrect = p -> p.getPrice() != null && p.getStock() > 0;
+    private final Predicate<Product> isProductCorrect = p -> p.getPrice() != null && p.getStock() > 0;
 
     public static synchronized ArrayListProductDao getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new ArrayListProductDao();
+        }
         return instance;
     }
 
@@ -39,8 +40,9 @@ public class ArrayListProductDao implements ProductDao {
     }
     @Override
     public synchronized List<Product> findProducts(String query) {
-        if (query == null || query.trim().isEmpty())
+        if (query == null || query.trim().isEmpty()) {
             return findProducts();
+        }
 
         String[] keywords = query.toLowerCase().split(" ");
         ToIntFunction<Product> getNumberOfMatches = product -> (int) Arrays.stream(keywords)
@@ -57,8 +59,9 @@ public class ArrayListProductDao implements ProductDao {
     @Override
     public synchronized List<Product> findProducts(String query, String sortBy, boolean ascending) {
         List<Product> products = findProducts(query);
-        if (sortBy == null)
+        if (sortBy == null) {
             return products;
+        }
 
         Comparator<Product> productComparator = null;
         switch (sortBy) {
@@ -69,11 +72,13 @@ public class ArrayListProductDao implements ProductDao {
                 productComparator = Comparator.comparing(Product::getPrice);
                 break;
         }
-        if (productComparator == null)
+        if (productComparator == null) {
             return products;
+        }
 
-        if (!ascending)
+        if (!ascending) {
             productComparator = productComparator.reversed();
+        }
 
         products.sort(productComparator);
         return products;
@@ -81,8 +86,9 @@ public class ArrayListProductDao implements ProductDao {
 
     @Override
     public synchronized void save(Product product) {
-        if (product != null && products.stream().noneMatch(p -> p.getId().equals(product.getId())))
+        if (product != null && products.stream().noneMatch(p -> p.getId().equals(product.getId()))) {
             products.add(product);
+        }
     }
 
     @Override
