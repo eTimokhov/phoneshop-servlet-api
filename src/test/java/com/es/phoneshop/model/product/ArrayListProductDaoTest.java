@@ -38,20 +38,20 @@ public class ArrayListProductDaoTest
     }
 
     @Test
-    public void testGetProduct() {
+    public void testGetProduct() throws ProductNotFoundException {
         Product product = new Product();
         product.setId(1L);
         productDao.save(product);
         assertNotNull(productDao.getProduct(1L));
     }
 
-    @Test
-    public void testDeleteProduct() {
+    @Test(expected = ProductNotFoundException.class)
+    public void testDeleteProduct() throws ProductNotFoundException {
         Product product = new Product();
         product.setId(1L);
         productDao.save(product);
         productDao.delete(1L);
-        assertNull(productDao.getProduct(1L));
+        productDao.getProduct(1L);
     }
 
     @Test
@@ -106,8 +106,25 @@ public class ArrayListProductDaoTest
         assertTrue(result2.contains(p2));
         assertTrue(result2.contains(p3));
 
+    }
+
+    public void testSearchProductsWithEmptyQuery() {
+        Product p1 = getCorrectProduct();
+        Product p2 = getCorrectProduct();
+        Product p3 = getCorrectProduct();
+        p1.setId(1L);
+        p2.setId(2L);
+        p3.setId(3L);
+        p1.setDescription("Samsung Galaxy S II");
+        p2.setDescription("Siemens C56");
+        p3.setDescription("iPhone X");
+        productDao.save(p1);
+        productDao.save(p2);
+        productDao.save(p3);
+
         assertEquals(3, productDao.findProducts(null).size());
         assertEquals(3, productDao.findProducts("   ").size());
+        assertEquals(3, productDao.findProducts("").size());
     }
 
     @Test

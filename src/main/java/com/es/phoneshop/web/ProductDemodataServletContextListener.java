@@ -19,7 +19,7 @@ public class ProductDemodataServletContextListener implements ServletContextList
         getSampleProducts().forEach(productDao::save);
     }
 
-    private List<Product> getSampleProducts(){
+    public List<Product> getSampleProducts() {
         List<Product> result = new ArrayList<>();
         Currency usd = Currency.getInstance("USD");
         result.add(new Product(1L, "sgs", "Samsung Galaxy S", new BigDecimal(100), usd, 100, "https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/manufacturer/Samsung/Samsung%20Galaxy%20S.jpg"));
