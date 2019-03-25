@@ -2,6 +2,7 @@ package com.es.phoneshop.web;
 
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.product.ProductNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,14 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductListPageServletTest {
+public class ProductDetailsPageServletTest {
     @Mock
     private HttpServletRequest request;
     @Mock
@@ -30,18 +31,15 @@ public class ProductListPageServletTest {
     @Mock
     private ProductDao productDao;
 
-    private ProductListPageServlet servlet = new ProductListPageServlet();
-    private List<Product> products;
+    private ProductDetailsPageServlet servlet = new ProductDetailsPageServlet();
+    private Product product;
 
     @Before
-    public void setup() {
-        String query = "iphone 6";
-        String sortBy = "price";
-
+    public void setup() throws ProductNotFoundException {
+        product = new Product();
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
-        when(request.getParameter("query")).thenReturn(query);
-        when(request.getParameter("sortBy")).thenReturn(sortBy);
-        when(productDao.findProducts(eq(query), eq(sortBy), anyBoolean())).thenReturn(products);
+        when(request.getPathInfo()).thenReturn("/2");
+        when(productDao.getProduct(anyLong())).thenReturn(product);
         servlet.setProductDao(productDao);
     }
 
@@ -52,8 +50,8 @@ public class ProductListPageServletTest {
     }
 
     @Test
-    public void testSetProductList() throws ServletException, IOException {
+    public void testSetProduct() throws ServletException, IOException {
         servlet.doGet(request, response);
-        verify(request).setAttribute("products", products);
+        verify(request).setAttribute("product", product);
     }
 }
