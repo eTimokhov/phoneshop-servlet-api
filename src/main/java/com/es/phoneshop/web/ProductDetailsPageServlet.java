@@ -1,5 +1,7 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.model.cart.CartService;
+import com.es.phoneshop.model.cart.HttpSessionCartService;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
@@ -12,7 +14,14 @@ import java.io.IOException;
 
 public class ProductDetailsPageServlet extends HttpServlet {
 
-    private ProductDao productDao = ArrayListProductDao.getInstance();
+    private ProductDao productDao;
+    private CartService cartService;
+
+    @Override
+    public void init() throws ServletException {
+        productDao = ArrayListProductDao.getInstance();
+        cartService = HttpSessionCartService.getInstance();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

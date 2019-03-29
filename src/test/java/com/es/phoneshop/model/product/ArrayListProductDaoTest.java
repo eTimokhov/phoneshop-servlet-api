@@ -1,6 +1,6 @@
 package com.es.phoneshop.model.product;
 
-import org.junit.Before;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ public class ArrayListProductDaoTest
         productDao = ArrayListProductDao.getInstance();
     }
 
-    @Before
-    public void setup() {
+    @After
+    public void clear() {
         productDao.setProducts(new ArrayList<>());
     }
 
