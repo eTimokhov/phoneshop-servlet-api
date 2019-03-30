@@ -73,4 +73,8 @@ public class ProductDetailsPageServlet extends HttpServlet {
     public void setProductDao(ProductDao productDao) {
         this.productDao = productDao;
     }
+
+    public void setCartService(CartService cartService) {
+        this.cartService = cartService;
+    }
 }
