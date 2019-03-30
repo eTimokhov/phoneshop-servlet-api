@@ -16,7 +16,7 @@
     </a>
   </header>
   <p>
-    <b><%= HttpSessionCartService.getInstance().getCart() %></b>
+    <b><%= HttpSessionCartService.getInstance().getCart(request) %></b>
   </p>
   <main>
     <jsp:doBody/>

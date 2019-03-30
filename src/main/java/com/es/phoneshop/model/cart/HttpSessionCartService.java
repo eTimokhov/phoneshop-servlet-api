@@ -5,13 +5,15 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.product.ProductNotFoundException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class HttpSessionCartService implements CartService {
 
     private static HttpSessionCartService instance;
+    private static final String SESSION_CART_KEY = "sessionCart";
     private ProductDao productDao;
-    private Cart cart = new Cart();
 
     private HttpSessionCartService(){
         productDao = ArrayListProductDao.getInstance();
@@ -29,7 +31,7 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void add(long productId, int quantity) throws ProductNotFoundException, OutOfStockException {
+    public void add(Cart cart, long productId, int quantity) throws ProductNotFoundException, OutOfStockException {
         Product product = productDao.getProduct(productId);
         Optional<CartItem> optionalCartItem = cart.getCartItems().stream()
                 .filter(c -> c.getProduct().getId() == productId)
@@ -49,11 +51,13 @@ public class HttpSessionCartService implements CartService {
         }
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public Cart getCart() {
+    public Cart getCart(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute(SESSION_CART_KEY);
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute(SESSION_CART_KEY, cart);
+        }
         return cart;
     }
 
