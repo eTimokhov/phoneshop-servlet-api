@@ -16,10 +16,11 @@
     </a>
   </header>
   <p>
-    <b><%= HttpSessionCartService.getInstance().getCart(request) %></b>
+    <b>${sessionScope.sessionCart}</b>
   </p>
   <main>
     <jsp:doBody/>
+    <jsp:include page="../pages/recentlyViewedProducs.jsp" />
   </main>
 </body>
 </html>

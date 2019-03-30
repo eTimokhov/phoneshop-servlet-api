@@ -5,6 +5,7 @@ import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.product.ProductNotFoundException;
+import com.es.phoneshop.model.recentlyviewed.RecentlyViewedProductsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -33,10 +35,13 @@ public class ProductDetailsPageServletTest {
     private ProductDao productDao;
     @Mock
     private CartService cartService;
+    @Mock
+    private RecentlyViewedProductsService recentlyViewedProductsService;
 
     private ProductDetailsPageServlet servlet = new ProductDetailsPageServlet();
     private Cart cart;
     private Product product;
+    private LinkedList<Product> recentlyViewedProducts;
 
     @Before
     public void setup() throws ProductNotFoundException {
@@ -48,8 +53,12 @@ public class ProductDetailsPageServletTest {
         cart = new Cart();
         when(cartService.getCart(request)).thenReturn(cart);
 
+        recentlyViewedProducts = new LinkedList<>();
+        when(recentlyViewedProductsService.getProducts(request)).thenReturn(recentlyViewedProducts);
+
         servlet.setProductDao(productDao);
         servlet.setCartService(cartService);
+        servlet.setRecentlyViewedProductsService(recentlyViewedProductsService);
     }
 
     @Test

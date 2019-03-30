@@ -7,28 +7,37 @@ import com.es.phoneshop.model.cart.OutOfStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
+import com.es.phoneshop.model.recentlyviewed.HttpSessionRecentlyViewedProductsService;
+import com.es.phoneshop.model.recentlyviewed.RecentlyViewedProductsService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class ProductDetailsPageServlet extends HttpServlet {
 
     private ProductDao productDao;
     private CartService cartService;
+    private RecentlyViewedProductsService recentlyViewedProductsService;
 
     @Override
     public void init() throws ServletException {
         productDao = ArrayListProductDao.getInstance();
         cartService = HttpSessionCartService.getInstance();
+        recentlyViewedProductsService = HttpSessionRecentlyViewedProductsService.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long productId = getProductId(request);
         Product product = productDao.getProduct(productId);
+
+        LinkedList<Product> products = recentlyViewedProductsService.getProducts(request);
+        recentlyViewedProductsService.addProduct(products, product);
+
         request.setAttribute("product", product);
         request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
     }
@@ -76,5 +85,9 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     public void setCartService(CartService cartService) {
         this.cartService = cartService;
+    }
+
+    public void setRecentlyViewedProductsService(RecentlyViewedProductsService recentlyViewedProductsService) {
+        this.recentlyViewedProductsService = recentlyViewedProductsService;
     }
 }
