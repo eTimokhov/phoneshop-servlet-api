@@ -1,3 +1,4 @@
+<%@ tag import="com.es.phoneshop.model.cart.HttpSessionCartService" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ attribute name="pageTitle" required="true" %>
 
@@ -14,6 +15,9 @@
       PhoneShop
     </a>
   </header>
+  <p>
+    <b><%= HttpSessionCartService.getInstance().getCart() %></b>
+  </p>
   <main>
     <jsp:doBody/>
   </main>

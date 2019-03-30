@@ -1,7 +1,9 @@
 package com.es.phoneshop.web;
 
+import com.es.phoneshop.model.cart.Cart;
 import com.es.phoneshop.model.cart.CartService;
 import com.es.phoneshop.model.cart.HttpSessionCartService;
+import com.es.phoneshop.model.cart.OutOfStockException;
 import com.es.phoneshop.model.product.ArrayListProductDao;
 import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
@@ -25,11 +27,46 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pathInfo = request.getPathInfo();
-        long productId = Long.parseLong(pathInfo.substring(1));
+        long productId = getProductId(request);
         Product product = productDao.getProduct(productId);
         request.setAttribute("product", product);
         request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        long productId = getProductId(request);
+        String quantityParam = request.getParameter("quantity");
+        int quantity;
+        try {
+            quantity = Integer.parseInt(quantityParam);
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Not a number");
+            doGet(request, response);
+            return;
+        }
+
+        if (quantity <= 0) {
+            request.setAttribute("error", "Invalid value");
+            doGet(request, response);
+            return;
+        }
+
+        try {
+            cartService.add(productId, quantity);
+        } catch (OutOfStockException e) {
+            request.setAttribute("error","Not enough stock");
+            doGet(request, response);
+            return;
+        }
+
+        String successMessage = "Added to cart successfully";
+        response.sendRedirect(request.getRequestURI() + "?message=" + successMessage + "&quantity=" + quantity);
+    }
+
+    private long getProductId(HttpServletRequest request) {
+        String pathInfo = request.getPathInfo();
+        return Long.parseLong(pathInfo.substring(1));
     }
 
     public void setProductDao(ProductDao productDao) {

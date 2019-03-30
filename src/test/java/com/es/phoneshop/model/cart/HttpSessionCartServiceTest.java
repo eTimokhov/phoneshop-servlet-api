@@ -18,13 +18,15 @@ import static org.mockito.Mockito.when;
 public class HttpSessionCartServiceTest {
 
     private static HttpSessionCartService cartService = HttpSessionCartService.getInstance();
-    private Product product = new Product();
+    private Product product;
 
     @Mock
     private ProductDao productDao;
 
     @Before
     public void setup() throws ProductNotFoundException {
+        product = new Product();
+        product.setStock(10);
         when(productDao.getProduct(anyLong())).thenReturn(product);
         cartService.setProductDao(productDao);
     }
@@ -35,7 +37,7 @@ public class HttpSessionCartServiceTest {
     }
 
     @Test
-    public void testAddingProduct() throws ProductNotFoundException {
+    public void testAddingProduct() throws ProductNotFoundException, OutOfStockException {
         cartService.add(3, 5);
         assertEquals(1, cartService.getCart().getCartItems().size());
     }
