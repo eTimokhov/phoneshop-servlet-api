@@ -14,7 +14,7 @@ public class ProductListPageServlet extends HttpServlet {
     private ProductDao productDao;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         productDao = ArrayListProductDao.getInstance();
     }
 

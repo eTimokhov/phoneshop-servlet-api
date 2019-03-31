@@ -30,7 +30,7 @@ public class HttpSessionCartServiceTest {
     private HttpSession existingSession;
 
     @Before
-    public void setup() throws ProductNotFoundException {
+    public void setup() {
         cartService.setProductDao(productDao);
     }
 
@@ -81,6 +81,7 @@ public class HttpSessionCartServiceTest {
         assertEquals(1, cart.getCartItems().size());
         assertEquals(15, cart.getCartItems().get(0).getQuantity());
     }
+
     @Test(expected = OutOfStockException.class)
     public void testAddProductOutOfStock() throws ProductNotFoundException, OutOfStockException {
         Cart cart = new Cart();
@@ -95,19 +96,5 @@ public class HttpSessionCartServiceTest {
         cartService.add(cart, 1, 4);
         cartService.add(cart, 1, 4);
     }
-
-/*
-    @After
-    public void clear() {
-        cartService.setCart(new Cart());
-    }
-
-    @Test
-    public void testAddingProduct() throws ProductNotFoundException, OutOfStockException {
-        cartService.add(3, 5);
-        assertEquals(1, cartService.getCart().getCartItems().size());
-    }
-*/
-
 
 }

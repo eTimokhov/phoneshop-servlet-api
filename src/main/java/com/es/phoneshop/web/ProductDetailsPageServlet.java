@@ -24,7 +24,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     private RecentlyViewedProductsService recentlyViewedProductsService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         productDao = ArrayListProductDao.getInstance();
         cartService = HttpSessionCartService.getInstance();
         recentlyViewedProductsService = HttpSessionRecentlyViewedProductsService.getInstance();

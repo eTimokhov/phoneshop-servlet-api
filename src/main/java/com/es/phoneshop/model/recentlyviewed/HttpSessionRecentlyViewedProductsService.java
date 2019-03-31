@@ -11,7 +11,7 @@ public class HttpSessionRecentlyViewedProductsService implements RecentlyViewedP
 
     private static HttpSessionRecentlyViewedProductsService instance;
     private int maxProductCount;
-    private final String SESSION_RECENTLY_VIEWED_KEY = "recentlyViewedProducts";
+    private static final String SESSION_RECENTLY_VIEWED_KEY = "recentlyViewedProducts";
 
     public static HttpSessionRecentlyViewedProductsService getInstance() {
         if (instance == null) {
