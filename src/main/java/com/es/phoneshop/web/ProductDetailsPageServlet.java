@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.LinkedList;
 
 public class ProductDetailsPageServlet extends HttpServlet {
 
@@ -35,8 +34,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         long productId = getProductId(request);
         Product product = productDao.getProduct(productId);
 
-        LinkedList<Product> products = recentlyViewedProductsService.getProducts(request);
-        recentlyViewedProductsService.addProduct(products, product);
+        recentlyViewedProductsService.addProduct(request, product);
 
         request.setAttribute("product", product);
         request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
@@ -50,14 +48,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
         try {
             quantity = Integer.parseInt(quantityParam);
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Not a number");
-            doGet(request, response);
+            sendErrorMessage("Not a number", request, response);
             return;
         }
 
         if (quantity <= 0) {
-            request.setAttribute("error", "Invalid value");
-            doGet(request, response);
+            sendErrorMessage("Invalid value", request, response);
             return;
         }
 
@@ -65,8 +61,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
         try {
             cartService.add(cart, productId, quantity);
         } catch (OutOfStockException e) {
-            request.setAttribute("error","Not enough stock");
-            doGet(request, response);
+            sendErrorMessage("Not enough stock", request, response);
             return;
         }
 
@@ -77,6 +72,12 @@ public class ProductDetailsPageServlet extends HttpServlet {
     private long getProductId(HttpServletRequest request) {
         String pathInfo = request.getPathInfo();
         return Long.parseLong(pathInfo.substring(1));
+    }
+
+    private void sendErrorMessage(String message, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute("error",message);
+        doGet(request, response);
     }
 
     public void setProductDao(ProductDao productDao) {

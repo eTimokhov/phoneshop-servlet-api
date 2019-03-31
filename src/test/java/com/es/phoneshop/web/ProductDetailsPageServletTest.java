@@ -41,7 +41,6 @@ public class ProductDetailsPageServletTest {
     private ProductDetailsPageServlet servlet = new ProductDetailsPageServlet();
     private Cart cart;
     private Product product;
-    private LinkedList<Product> recentlyViewedProducts;
 
     @Before
     public void setup() throws ProductNotFoundException {
@@ -52,9 +51,6 @@ public class ProductDetailsPageServletTest {
 
         cart = new Cart();
         when(cartService.getCart(request)).thenReturn(cart);
-
-        recentlyViewedProducts = new LinkedList<>();
-        when(recentlyViewedProductsService.getProducts(request)).thenReturn(recentlyViewedProducts);
 
         servlet.setProductDao(productDao);
         servlet.setCartService(cartService);

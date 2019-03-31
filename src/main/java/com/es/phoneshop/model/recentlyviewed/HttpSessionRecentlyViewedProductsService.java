@@ -28,7 +28,8 @@ public class HttpSessionRecentlyViewedProductsService implements RecentlyViewedP
     }
 
     @Override
-    public void addProduct(LinkedList<Product> products, Product product) {
+    public void addProduct(HttpServletRequest request, Product product) {
+        LinkedList<Product> products = getProducts(request);
         if (products.contains(product)) {
             products.remove(product);
         } else if (products.size() == maxProductCount) {
@@ -37,7 +38,6 @@ public class HttpSessionRecentlyViewedProductsService implements RecentlyViewedP
         products.addFirst(product);
     }
 
-    @Override
     public LinkedList<Product> getProducts(HttpServletRequest request) {
         HttpSession session = request.getSession();
         LinkedList<Product> products = (LinkedList<Product>) session.getAttribute(SESSION_RECENTLY_VIEWED_KEY);
