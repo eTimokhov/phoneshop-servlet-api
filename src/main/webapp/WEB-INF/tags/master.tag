@@ -1,6 +1,7 @@
 <%@ tag import="com.es.phoneshop.model.cart.HttpSessionCartService" %>
 <%@ tag trimDirectiveWhitespaces="true" %>
 <%@ attribute name="pageTitle" required="true" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <html>
 <head>
@@ -20,7 +21,7 @@
   </p>
   <main>
     <jsp:doBody/>
-    <jsp:include page="../pages/recentlyViewedProducs.jsp" />
+    <tags:recentlyViewedProducts />
   </main>
 </body>
 </html>

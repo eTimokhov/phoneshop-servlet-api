@@ -35,19 +35,9 @@ public class HttpSessionRecentlyViewedProductsServiceTest {
     @Before
     public void setup() {
         service.setMaxProductCount(3);
-        when(newRequest.getSession()).thenReturn(newSession);
         products = new LinkedList<>();
+        when(newRequest.getSession()).thenReturn(newSession);
         when(newSession.getAttribute(SESSION_RECENTLY_VIEWED_KEY)).thenReturn(products);
-    }
-
-    @Test
-    public void testGetListReturnExistingList() {
-        LinkedList<Product> existingProductList = new LinkedList<>();
-        when(existingSessionRequest.getSession()).thenReturn(existingSession);
-        when(existingSession.getAttribute(SESSION_RECENTLY_VIEWED_KEY)).thenReturn(existingProductList);
-
-        LinkedList<Product> productList = service.getProducts(existingSessionRequest);
-        assertEquals(existingProductList, productList);
     }
 
     @Test

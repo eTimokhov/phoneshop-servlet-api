@@ -38,7 +38,7 @@ public class HttpSessionRecentlyViewedProductsService implements RecentlyViewedP
         products.addFirst(product);
     }
 
-    public LinkedList<Product> getProducts(HttpServletRequest request) {
+    private LinkedList<Product> getProducts(HttpServletRequest request) {
         HttpSession session = request.getSession();
         LinkedList<Product> products = (LinkedList<Product>) session.getAttribute(SESSION_RECENTLY_VIEWED_KEY);
         if (products == null) {
