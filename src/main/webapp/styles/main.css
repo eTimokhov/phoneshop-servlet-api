@@ -28,7 +28,21 @@ img.product-tile {
   max-width: 64px;
 }
 
+.last-product-tile {
+  display: inline-block;
+  border: 1px solid gray;
+  width: 150px;
+}
+
 /* Page specific styles */
 body.product-list {
 
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
 }

@@ -24,9 +24,18 @@
     <servlet-name>productDetails</servlet-name>
     <url-pattern>/products/*</url-pattern>
   </servlet-mapping>
+  
+  <context-param>
+    <param-name>recentlyViewedProductCount</param-name>
+    <param-value>3</param-value>
+  </context-param>
 
   <listener>
     <listener-class>com.es.phoneshop.web.ProductDemodataServletContextListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>com.es.phoneshop.web.RecentlyViewedProductsServletContextListener</listener-class>
   </listener>
 
   <error-page>

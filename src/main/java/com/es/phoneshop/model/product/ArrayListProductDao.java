@@ -12,9 +12,13 @@ public class ArrayListProductDao implements ProductDao {
     private List<Product> products = new ArrayList<>();
     private final Predicate<Product> isProductCorrect = p -> p.getPrice() != null && p.getStock() > 0;
 
-    public static synchronized ArrayListProductDao getInstance() {
+    public static ArrayListProductDao getInstance() {
         if (instance == null) {
-            instance = new ArrayListProductDao();
+            synchronized (ArrayListProductDao.class) {
+                if (instance == null) {
+                    instance = new ArrayListProductDao();
+                }
+            }
         }
         return instance;
     }
@@ -32,12 +36,14 @@ public class ArrayListProductDao implements ProductDao {
         }
         return optionalProduct.get();
     }
+
     @Override
     public synchronized List<Product> findProducts() {
         return products.stream()
                 .filter(isProductCorrect)
                 .collect(Collectors.toList());
     }
+
     @Override
     public synchronized List<Product> findProducts(String query) {
         if (query == null || query.trim().isEmpty()) {
