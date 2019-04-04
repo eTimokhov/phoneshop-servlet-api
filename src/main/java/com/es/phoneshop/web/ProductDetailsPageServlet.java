@@ -64,7 +64,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
             sendErrorMessage("Not enough stock", request, response);
             return;
         }
-
+        cart.recalculateTotalPrice();
         String successMessage = "Added to cart successfully";
         response.sendRedirect(request.getRequestURI() + "?message=" + successMessage + "&quantity=" + quantity);
     }
@@ -76,7 +76,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
 
     private void sendErrorMessage(String message, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("error",message);
+        request.setAttribute("error", message);
         doGet(request, response);
     }
 

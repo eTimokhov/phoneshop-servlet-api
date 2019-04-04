@@ -6,7 +6,11 @@
 
 <tags:master pageTitle="Cart">
   <h2>Cart</h2>
-  <form method="post">
+  <p class="success">${param.message}</p>
+  <c:if test="${not empty requestScope.errors}">
+    <p class="error">Error occurred while updating cart</p>
+  </c:if>
+  <form method="post" action="${pageContext.request.contextPath}/cart">
     <table>
       <thead>
         <tr>
@@ -16,7 +20,7 @@
           <td class="price">Price</td>
         </tr>
       </thead>
-      <c:forEach var="cartItem" items="${cart.cartItems}">
+      <c:forEach var="cartItem" items="${cart.cartItems}" varStatus="status">
         <c:set var="product" value="${cartItem.product}" />
         <tr>
           <td>
@@ -26,7 +30,13 @@
             <a href="products/${product.id}">${product.description}</a>
           </td>
           <td>
-            <input type="text" value="${cartItem.quantity}" >
+            <input type="text" name="quantity"
+                   value="${not empty paramValues.quantity[status.index] ? paramValues.quantity[status.index] : cartItem.quantity}" >
+            <c:if test="${not empty requestScope.errors[status.index]}">
+              <br>
+              <span class="error">${requestScope.errors[status.index]}</span>
+            </c:if>
+            <input type="hidden" name="id" value="${product.id}">
           </td>
           <td class="price">
             <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="${product.currency.symbol}"/>
@@ -35,8 +45,9 @@
       </c:forEach>
         <tr>
           <td colspan="3">Total</td>
-          <td>${cart.totalPrice}</td>
+          <td class="price">${cart.totalPrice}</td>
         </tr>
     </table>
+    <input type="submit"  value="Update">
   </form>
 </tags:master>

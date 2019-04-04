@@ -8,5 +8,6 @@ public interface CartService {
 
     Cart getCart(HttpServletRequest request);
     void add(Cart cart, long productId, int quantity) throws ProductNotFoundException, OutOfStockException;
+    void update(Cart cart, long productId, int quantity) throws ProductNotFoundException, OutOfStockException;
 
 }

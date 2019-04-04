@@ -51,6 +51,30 @@ public class HttpSessionCartService implements CartService {
         }
     }
 
+    @Override
+    public void update(Cart cart, long productId, int quantity) throws ProductNotFoundException, OutOfStockException {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Invalid quantity");
+        }
+
+        Product product = productDao.getProduct(productId);
+        Optional<CartItem> optionalCartItem = cart.getCartItems().stream()
+                .filter(c -> c.getProduct().getId() == productId)
+                .findAny();
+
+        if (quantity > product.getStock()) {
+            throw new OutOfStockException("Not enough stock. Product stock is " + product.getStock());
+        }
+
+        if (optionalCartItem.isPresent()) {
+            CartItem cartItem = optionalCartItem.get();
+            cartItem.setQuantity(quantity);
+        } else {
+            CartItem cartItem = new CartItem(product, quantity);
+            cart.getCartItems().add(cartItem);
+        }
+    }
+
     public Cart getCart(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute(SESSION_CART_KEY);

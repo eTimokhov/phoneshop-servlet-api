@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Cart implements Serializable {
 
     private final List<CartItem> cartItems;
+    private BigDecimal totalPrice;
 
     public Cart() {
         cartItems = new ArrayList<>();
@@ -18,15 +18,15 @@ public class Cart implements Serializable {
         return cartItems;
     }
 
-    public BigDecimal getTotalPrice() {
-        Optional<BigDecimal> optionalPrice = cartItems.stream()
+    public void recalculateTotalPrice() {
+        totalPrice = cartItems.stream()
                 .map(c -> c.getProduct().getPrice().multiply(BigDecimal.valueOf(c.getQuantity())))
-                .reduce(BigDecimal::add);
-        return optionalPrice.orElse(BigDecimal.ZERO);
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
     }
 
-    public boolean isEmpty() {
-        return cartItems.isEmpty();
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
     @Override
