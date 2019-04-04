@@ -20,7 +20,6 @@ public class HttpSessionCartServiceTest {
 
     private static HttpSessionCartService cartService = HttpSessionCartService.getInstance();
     private static final String SESSION_CART_KEY = "sessionCart";
-    private Product product;
 
     @Mock
     private ProductDao productDao;

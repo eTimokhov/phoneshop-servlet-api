@@ -22,10 +22,6 @@ public class HttpSessionRecentlyViewedProductsServiceTest {
     private HttpSessionRecentlyViewedProductsService service = HttpSessionRecentlyViewedProductsService.getInstance();
 
     @Mock
-    private HttpServletRequest existingSessionRequest;
-    @Mock
-    private HttpSession existingSession;
-    @Mock
     private HttpServletRequest newRequest;
     @Mock
     private HttpSession newSession;
@@ -67,7 +63,7 @@ public class HttpSessionRecentlyViewedProductsServiceTest {
     public void testLastAddedProductBecomesFirstInList() {
         Product product1 = new Product();
         Product product2 = new Product();
-        ;
+
         service.addProduct(newRequest, product1);
         service.addProduct(newRequest, product2);
         service.addProduct(newRequest, product1);

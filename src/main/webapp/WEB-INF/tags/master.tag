@@ -16,9 +16,7 @@
       PhoneShop
     </a>
   </header>
-  <p>
-    <b>${sessionScope.sessionCart}</b>
-  </p>
+  <a href="${pageContext.servletContext.contextPath}/cart">Cart</a>
   <main>
     <jsp:doBody/>
     <tags:recentlyViewedProducts />

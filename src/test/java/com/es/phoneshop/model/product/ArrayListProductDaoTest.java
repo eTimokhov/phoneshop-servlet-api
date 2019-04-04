@@ -108,6 +108,7 @@ public class ArrayListProductDaoTest
 
     }
 
+    @Test
     public void testSearchProductsWithEmptyQuery() {
         Product p1 = getCorrectProduct();
         Product p2 = getCorrectProduct();
