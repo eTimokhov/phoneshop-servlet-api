@@ -65,4 +65,8 @@ public class CartPageServlet extends HttpServlet {
         }
         return null;
     }
+
+    public void setCartService(CartService cartService) {
+        this.cartService = cartService;
+    }
 }

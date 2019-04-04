@@ -32,4 +32,8 @@ public class CartItemDeleteServlet extends HttpServlet {
         int servletPathIndex = uri.indexOf(request.getServletPath());
         return Long.parseLong(uri.substring(servletPathIndex + request.getServletPath().length() + 1));
     }
+
+    public void setCartService(CartService cartService) {
+        this.cartService = cartService;
+    }
 }

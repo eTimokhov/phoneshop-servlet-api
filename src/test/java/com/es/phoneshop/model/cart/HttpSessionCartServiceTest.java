@@ -12,6 +12,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -96,4 +98,79 @@ public class HttpSessionCartServiceTest {
         cartService.add(cart, 1, 4);
     }
 
+    @Test
+    public void testUpdateExistingProduct() throws ProductNotFoundException, OutOfStockException {
+        Cart cart = new Cart();
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setStock(30);
+
+        when(productDao.getProduct(1L)).thenReturn(product);
+
+        cartService.add(cart, 1, 5);
+        cartService.update(cart,1, 10);
+
+        assertEquals(10, cart.getCartItems().get(0).getQuantity());
+    }
+
+    @Test
+    public void testUpdateNonexistentProduct() throws ProductNotFoundException, OutOfStockException {
+        Cart cart = new Cart();
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setStock(30);
+
+        when(productDao.getProduct(1L)).thenReturn(product);
+
+        cartService.update(cart,1, 10);
+
+        assertEquals(10, cart.getCartItems().get(0).getQuantity());
+    }
+
+    @Test
+    public void testDeleteProduct() throws ProductNotFoundException, OutOfStockException {
+        Cart cart = new Cart();
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setStock(30);
+
+        when(productDao.getProduct(1L)).thenReturn(product);
+
+        cartService.add(cart, 1, 5);
+        cartService.delete(cart, 1);
+        assertEquals(0, cart.getCartItems().size());
+    }
+
+    @Test
+    public void testRecalculateTotalPrice() {
+        Cart cart = new Cart();
+
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setStock(30);
+        product1.setPrice(BigDecimal.valueOf(10));
+
+        Product product2 = new Product();
+        product2.setId(2L);
+        product2.setStock(30);
+        product2.setPrice(BigDecimal.valueOf(50));
+
+        cart.getCartItems().add(new CartItem(product1, 1));
+        cartService.recalculateTotalPrice(cart);
+        assertEquals(BigDecimal.valueOf(10), cart.getTotalPrice());
+
+        cart.getCartItems().add(new CartItem(product2, 5));
+        cartService.recalculateTotalPrice(cart);
+        assertEquals(BigDecimal.valueOf(260), cart.getTotalPrice());
+    }
+
+    @Test
+    public void testRecalculateEmptyCartTotalPrice() {
+        Cart cart = new Cart();
+        cartService.recalculateTotalPrice(cart);
+        assertEquals(BigDecimal.ZERO, cart.getTotalPrice());
+    }
 }
