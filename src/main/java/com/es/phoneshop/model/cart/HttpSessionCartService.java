@@ -7,6 +7,7 @@ import com.es.phoneshop.model.product.ProductNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class HttpSessionCartService implements CartService {
@@ -73,6 +74,20 @@ public class HttpSessionCartService implements CartService {
             CartItem cartItem = new CartItem(product, quantity);
             cart.getCartItems().add(cartItem);
         }
+    }
+
+    @Override
+    public void delete(Cart cart, long productId) {
+        cart.getCartItems().removeIf(c -> c.getProduct().getId().equals(productId));
+    }
+
+    @Override
+    public void recalculateTotalPrice(Cart cart) {
+        BigDecimal totalPrice = cart.getCartItems().stream()
+                .map(c -> c.getProduct().getPrice().multiply(BigDecimal.valueOf(c.getQuantity())))
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
+        cart.setTotalPrice(totalPrice);
     }
 
     public Cart getCart(HttpServletRequest request) {

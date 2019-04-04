@@ -18,15 +18,12 @@ public class Cart implements Serializable {
         return cartItems;
     }
 
-    public void recalculateTotalPrice() {
-        totalPrice = cartItems.stream()
-                .map(c -> c.getProduct().getPrice().multiply(BigDecimal.valueOf(c.getQuantity())))
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO);
-    }
-
     public BigDecimal getTotalPrice() {
         return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
