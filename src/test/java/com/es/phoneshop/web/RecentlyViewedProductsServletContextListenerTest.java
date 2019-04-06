@@ -22,11 +22,11 @@ public class RecentlyViewedProductsServletContextListenerTest {
     private RecentlyViewedProductsServletContextListener listener = new RecentlyViewedProductsServletContextListener();
 
     @Mock
-    ServletContextEvent servletContextEvent;
+    private ServletContextEvent servletContextEvent;
     @Mock
-    ServletContext servletContext;
+    private ServletContext servletContext;
     @Mock
-    RecentlyViewedProductsService service;
+    private RecentlyViewedProductsService service;
 
     @Before
     public void setup() {

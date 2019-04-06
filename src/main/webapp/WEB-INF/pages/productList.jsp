@@ -41,4 +41,5 @@
       </tr>
     </c:forEach>
   </table>
+  <jsp:include page="/miniCart" />
 </tags:master>

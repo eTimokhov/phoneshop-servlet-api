@@ -24,7 +24,7 @@
             <span class="success">${param.message}</span>
         </c:if>
     </form>
-
+    <jsp:include page="/miniCart" />
     <hr>
     <a href="${pageContext.request.contextPath}/products">Return to product list</a>
 </tags:master>
