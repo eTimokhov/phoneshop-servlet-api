@@ -31,9 +31,7 @@ public class CartItemDeleteServletTest {
     @Before
     public void setup() {
         when(cartService.getCart(request)).thenReturn(cart);
-        when(request.getRequestURI()).thenReturn("/phoneshop-servlet-api/cart/deleteCartItem/1");
-        when(request.getServletPath()).thenReturn("/cart/deleteCartItem");
-        when(request.getContextPath()).thenReturn("/phoneshop-servlet-api");
+        when(request.getPathInfo()).thenReturn("/1");
         servlet.setCartService(cartService);
     }
 

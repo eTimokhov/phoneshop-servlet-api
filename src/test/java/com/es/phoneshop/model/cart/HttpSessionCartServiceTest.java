@@ -52,10 +52,12 @@ public class HttpSessionCartServiceTest {
         Product product1 = new Product();
         product1.setId(1L);
         product1.setStock(5);
+        product1.setPrice(BigDecimal.ONE);
 
         Product product2 = new Product();
         product2.setId(2L);
         product2.setStock(30);
+        product2.setPrice(BigDecimal.ONE);
 
         when(productDao.getProduct(1L)).thenReturn(product1);
         when(productDao.getProduct(2L)).thenReturn(product2);
@@ -73,6 +75,7 @@ public class HttpSessionCartServiceTest {
         Product product = new Product();
         product.setId(1L);
         product.setStock(30);
+        product.setPrice(BigDecimal.ONE);
 
         when(productDao.getProduct(1L)).thenReturn(product);
 
@@ -90,6 +93,7 @@ public class HttpSessionCartServiceTest {
         Product product = new Product();
         product.setId(1L);
         product.setStock(10);
+        product.setPrice(BigDecimal.ONE);
 
         when(productDao.getProduct(1L)).thenReturn(product);
 
@@ -105,6 +109,7 @@ public class HttpSessionCartServiceTest {
         Product product = new Product();
         product.setId(1L);
         product.setStock(30);
+        product.setPrice(BigDecimal.ONE);
 
         when(productDao.getProduct(1L)).thenReturn(product);
 
@@ -121,6 +126,7 @@ public class HttpSessionCartServiceTest {
         Product product = new Product();
         product.setId(1L);
         product.setStock(30);
+        product.setPrice(BigDecimal.ONE);
 
         when(productDao.getProduct(1L)).thenReturn(product);
 
@@ -136,6 +142,7 @@ public class HttpSessionCartServiceTest {
         Product product = new Product();
         product.setId(1L);
         product.setStock(30);
+        product.setPrice(BigDecimal.ONE);
 
         when(productDao.getProduct(1L)).thenReturn(product);
 
@@ -145,7 +152,7 @@ public class HttpSessionCartServiceTest {
     }
 
     @Test
-    public void testRecalculateTotalPrice() {
+    public void testTotalPriceCalculation() throws ProductNotFoundException, OutOfStockException {
         Cart cart = new Cart();
 
         Product product1 = new Product();
@@ -158,19 +165,29 @@ public class HttpSessionCartServiceTest {
         product2.setStock(30);
         product2.setPrice(BigDecimal.valueOf(50));
 
-        cart.getCartItems().add(new CartItem(product1, 1));
-        cartService.recalculateTotalPrice(cart);
+        when(productDao.getProduct(1L)).thenReturn(product1);
+        when(productDao.getProduct(2L)).thenReturn(product2);
+
+        cartService.add(cart, 1L, 1);
         assertEquals(BigDecimal.valueOf(10), cart.getTotalPrice());
 
-        cart.getCartItems().add(new CartItem(product2, 5));
-        cartService.recalculateTotalPrice(cart);
+        cartService.add(cart, 2L, 5);
         assertEquals(BigDecimal.valueOf(260), cart.getTotalPrice());
     }
 
     @Test
-    public void testRecalculateEmptyCartTotalPrice() {
+    public void testRecalculateEmptyCartTotalPrice() throws ProductNotFoundException, OutOfStockException {
         Cart cart = new Cart();
-        cartService.recalculateTotalPrice(cart);
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setStock(30);
+        product.setPrice(BigDecimal.ONE);
+
+        when(productDao.getProduct(1L)).thenReturn(product);
+        cartService.add(cart,1L, 1);
+        cartService.delete(cart, 1L);
+
         assertEquals(BigDecimal.ZERO, cart.getTotalPrice());
     }
 }

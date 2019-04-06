@@ -50,6 +50,8 @@ public class HttpSessionCartService implements CartService {
             CartItem cartItem = new CartItem(product, quantity);
             cart.getCartItems().add(cartItem);
         }
+
+        recalculateTotalPrice(cart);
     }
 
     @Override
@@ -58,10 +60,16 @@ public class HttpSessionCartService implements CartService {
             throw new IllegalArgumentException("Invalid quantity");
         }
 
-        Product product = productDao.getProduct(productId);
         Optional<CartItem> optionalCartItem = cart.getCartItems().stream()
                 .filter(c -> c.getProduct().getId() == productId)
                 .findAny();
+
+        Product product;
+        if (optionalCartItem.isPresent()) {
+            product = optionalCartItem.get().getProduct();
+        } else {
+            product = productDao.getProduct(productId);
+        }
 
         if (quantity > product.getStock()) {
             throw new OutOfStockException("Not enough stock. Product stock is " + product.getStock());
@@ -74,15 +82,17 @@ public class HttpSessionCartService implements CartService {
             CartItem cartItem = new CartItem(product, quantity);
             cart.getCartItems().add(cartItem);
         }
+
+        recalculateTotalPrice(cart);
     }
 
     @Override
     public void delete(Cart cart, long productId) {
         cart.getCartItems().removeIf(c -> c.getProduct().getId().equals(productId));
+        recalculateTotalPrice(cart);
     }
 
-    @Override
-    public void recalculateTotalPrice(Cart cart) {
+    private void recalculateTotalPrice(Cart cart) {
         BigDecimal totalPrice = cart.getCartItems().stream()
                 .map(c -> c.getProduct().getPrice().multiply(BigDecimal.valueOf(c.getQuantity())))
                 .reduce(BigDecimal::add)

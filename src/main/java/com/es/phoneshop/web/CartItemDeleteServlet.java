@@ -22,15 +22,13 @@ public class CartItemDeleteServlet extends HttpServlet {
         long productId = getProductId(request);
         Cart cart = cartService.getCart(request);
         cartService.delete(cart, productId);
-        cartService.recalculateTotalPrice(cart);
 
         response.sendRedirect(request.getContextPath() + "/cart?message=Deleted successfully");
     }
 
     private long getProductId(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        int servletPathIndex = uri.indexOf(request.getServletPath());
-        return Long.parseLong(uri.substring(servletPathIndex + request.getServletPath().length() + 1));
+        String pathInfo = request.getPathInfo();
+        return Long.parseLong(pathInfo.substring(1));
     }
 
     public void setCartService(CartService cartService) {

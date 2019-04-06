@@ -12,6 +12,11 @@ public class Cart implements Serializable {
 
     public Cart() {
         cartItems = new ArrayList<>();
+        totalPrice = BigDecimal.ZERO;
+    }
+
+    public boolean isEmpty() {
+        return cartItems.isEmpty();
     }
 
     public List<CartItem> getCartItems() {

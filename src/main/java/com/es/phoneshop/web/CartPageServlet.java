@@ -46,7 +46,6 @@ public class CartPageServlet extends HttpServlet {
                 }
             }
         }
-        cartService.recalculateTotalPrice(cart);
 
         boolean hasError = Arrays.stream(errors).anyMatch(Objects::nonNull);
         if (hasError) {

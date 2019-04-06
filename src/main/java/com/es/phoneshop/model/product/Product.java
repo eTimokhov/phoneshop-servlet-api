@@ -83,8 +83,4 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    @Override
-    public String toString() {
-        return description;
-    }
 }
