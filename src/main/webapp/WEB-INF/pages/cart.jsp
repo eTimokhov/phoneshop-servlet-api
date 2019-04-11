@@ -54,4 +54,9 @@
     </table>
     <input type="submit"  value="Update">
   </form>
+
+  <form action="${pageContext.request.contextPath}/checkout">
+    <input type="submit" value="Checkout">
+  </form>
+
 </tags:master>
