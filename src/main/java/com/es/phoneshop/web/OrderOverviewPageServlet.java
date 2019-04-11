@@ -35,4 +35,8 @@ public class OrderOverviewPageServlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
         return pathInfo.substring(1);
     }
+
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
-    private OrderDao orderDao;
+    private final OrderDao orderDao;
     private static OrderServiceImpl instance;
 
     private OrderServiceImpl(){

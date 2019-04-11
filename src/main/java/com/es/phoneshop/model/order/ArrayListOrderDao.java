@@ -8,8 +8,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ArrayListOrderDao implements OrderDao {
 
     private static ArrayListOrderDao instance;
-    private AtomicLong currentId = new AtomicLong(0);
-    private List<Order> orders;
+    private final AtomicLong currentId = new AtomicLong(0);
+    private final List<Order> orders;
 
     private ArrayListOrderDao() {
         orders = new ArrayList<>();
@@ -39,5 +39,10 @@ public class ArrayListOrderDao implements OrderDao {
                 .filter(o -> o.getSecureId().equals(secureId))
                 .findAny()
                 .orElse(null);
+    }
+
+    @Override
+    public List<Order> getOrders() {
+        return orders;
     }
 }
