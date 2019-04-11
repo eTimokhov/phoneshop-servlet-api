@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
-    private ArrayListOrderDao orderDao;
+    private OrderDao orderDao;
     private static OrderServiceImpl instance;
 
     private OrderServiceImpl(){
+        orderDao = ArrayListOrderDao.getInstance();
     }
 
     public static OrderService getInstance() {

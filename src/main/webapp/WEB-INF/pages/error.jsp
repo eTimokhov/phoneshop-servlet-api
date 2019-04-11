@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<tags:master pageTitle="Product Details">
+<tags:master pageTitle="Not found">
     <h2>Error 404 - Not found</h2>
     <p>${requestScope['javax.servlet.error.message']}</p>
     <hr>

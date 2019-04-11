@@ -21,6 +21,8 @@ public class Order implements Serializable {
     private BigDecimal deliveryCost;
     private String deliveryAddress;
     private String paymentMethod;
+    private long id;
+    private String secureId;
 
     public Order() {
         cartItems = new ArrayList<>();
@@ -114,5 +116,21 @@ public class Order implements Serializable {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getSecureId() {
+        return secureId;
+    }
+
+    public void setSecureId(String secureId) {
+        this.secureId = secureId;
     }
 }

@@ -34,6 +34,11 @@
     <servlet-name>checkout</servlet-name>
     <servlet-class>com.es.phoneshop.web.CheckoutPageServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>orderOverview</servlet-name>
+    <servlet-class>com.es.phoneshop.web.OrderOverviewPageServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>productList</servlet-name>
@@ -65,6 +70,11 @@
     <url-pattern>/checkout</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+    <servlet-name>orderOverview</servlet-name>
+    <url-pattern>/order/overview/*</url-pattern>
+  </servlet-mapping>
+  
   <context-param>
     <param-name>recentlyViewedProductCount</param-name>
     <param-value>3</param-value>
@@ -80,6 +90,11 @@
 
   <error-page>
     <exception-type>com.es.phoneshop.model.product.ProductNotFoundException</exception-type>
+    <location>/WEB-INF/pages/error.jsp</location>
+  </error-page>
+
+  <error-page>
+    <error-code>404</error-code>
     <location>/WEB-INF/pages/error.jsp</location>
   </error-page>
 

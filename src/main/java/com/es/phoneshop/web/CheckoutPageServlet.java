@@ -88,8 +88,12 @@ public class CheckoutPageServlet extends HttpServlet {
         order.setPaymentMethod(paymentMethod);
 
         orderService.placeOrder(order);
-        response.sendRedirect("success");
 
+        Cart cart = cartService.getCart(request);
+        cartService.clear(cart);
+
+        String secureId = order.getSecureId();
+        response.sendRedirect(request.getContextPath() + "/order/overview/" + secureId);
     }
 
     private Date parseDate(String deliveryDateString) throws ParseException {
