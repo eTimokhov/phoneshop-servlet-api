@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CheckoutPageServlet extends HttpServlet {
@@ -34,13 +35,10 @@ public class CheckoutPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = cartService.getCart(request);
-        DeliveryMode deliveryMode;
         String deliveryModeString = request.getParameter("deliveryMode");
-        if (deliveryModeString != null) {
-            deliveryMode = DeliveryMode.valueOf(deliveryModeString);
-        } else {
-            deliveryMode = DeliveryMode.STORE_PICKUP;
-        }
+        Optional<String> optionalDeliveryModeString = Optional.ofNullable(deliveryModeString);
+        DeliveryMode deliveryMode =
+                DeliveryMode.valueOf(optionalDeliveryModeString.orElse(DeliveryMode.STORE_PICKUP.toString()));
 
         Order order = orderService.createOrder(cart, deliveryMode);
         List<DeliveryMode> deliveryModes = orderService.getDeliveryModes();
