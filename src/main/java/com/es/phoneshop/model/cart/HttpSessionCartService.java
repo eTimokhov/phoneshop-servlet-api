@@ -92,6 +92,12 @@ public class HttpSessionCartService implements CartService {
         recalculateTotalPrice(cart);
     }
 
+    @Override
+    public void clear(Cart cart) {
+        cart.getCartItems().clear();
+        recalculateTotalPrice(cart);
+    }
+
     private void recalculateTotalPrice(Cart cart) {
         BigDecimal totalPrice = cart.getCartItems().stream()
                 .map(c -> c.getProduct().getPrice().multiply(BigDecimal.valueOf(c.getQuantity())))
