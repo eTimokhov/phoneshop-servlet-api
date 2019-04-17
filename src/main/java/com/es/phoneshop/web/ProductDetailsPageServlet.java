@@ -9,34 +9,42 @@ import com.es.phoneshop.model.product.Product;
 import com.es.phoneshop.model.product.ProductDao;
 import com.es.phoneshop.model.recentlyviewed.HttpSessionRecentlyViewedProductsService;
 import com.es.phoneshop.model.recentlyviewed.RecentlyViewedProductsService;
+import com.es.phoneshop.model.review.ProductReview;
+import com.es.phoneshop.model.review.ProductReviewService;
+import com.es.phoneshop.model.review.ProductReviewServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class ProductDetailsPageServlet extends HttpServlet {
 
     private ProductDao productDao;
     private CartService cartService;
     private RecentlyViewedProductsService recentlyViewedProductsService;
+    private ProductReviewService productReviewService;
 
     @Override
     public void init() {
         productDao = ArrayListProductDao.getInstance();
         cartService = HttpSessionCartService.getInstance();
         recentlyViewedProductsService = HttpSessionRecentlyViewedProductsService.getInstance();
+        productReviewService = ProductReviewServiceImpl.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long productId = getProductId(request);
         Product product = productDao.getProduct(productId);
+        List<ProductReview> reviews = productReviewService.getProductReviews(productId);
 
         recentlyViewedProductsService.addProduct(request, product);
 
         request.setAttribute("product", product);
+        request.setAttribute("reviews", reviews);
         request.getRequestDispatcher("/WEB-INF/pages/productDetails.jsp").forward(request, response);
     }
 
