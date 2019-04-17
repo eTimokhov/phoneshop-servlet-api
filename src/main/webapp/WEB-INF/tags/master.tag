@@ -16,7 +16,8 @@
       PhoneShop
     </a>
   </header>
-  <a href="${pageContext.servletContext.contextPath}/cart">Cart</a>
+  <a href="${pageContext.servletContext.contextPath}/cart">Cart</a><br>
+  <a href="${pageContext.servletContext.contextPath}/reviews">Manage reviews</a><br>
   <main>
     <jsp:doBody/>
     <tags:recentlyViewedProducts />

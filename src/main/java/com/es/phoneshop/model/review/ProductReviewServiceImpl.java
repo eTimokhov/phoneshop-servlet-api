@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 public class ProductReviewServiceImpl implements ProductReviewService {
 
     private static ProductReviewServiceImpl instance;
-    private ProductReviewDao productReviewDao = ArrayListProductReviewDao.getInstance();
+    private final ProductReviewDao productReviewDao = ArrayListProductReviewDao.getInstance();
 
     public static ProductReviewServiceImpl getInstance() {
         if (instance == null) {
@@ -34,7 +34,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     public List<ProductReview> getApprovedProductReviews(long productId) {
-        return productReviewDao.getReviews().stream()
+        return getProductReviews(productId).stream()
                 .filter(ProductReview::isApproved)
                 .collect(Collectors.toList());
     }

@@ -9,7 +9,7 @@ public class ArrayListProductReviewDao implements ProductReviewDao {
 
     private static ArrayListProductReviewDao instance;
 
-    private List<ProductReview> reviews = new ArrayList<>();
+    private final List<ProductReview> reviews = new ArrayList<>();
     private final AtomicLong currentId = new AtomicLong(0);
 
     public static ArrayListProductReviewDao getInstance() {

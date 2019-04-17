@@ -52,13 +52,21 @@
     <h3>Add review</h3>
     <form method="post" action="${pageContext.request.contextPath}/reviews/add/${product.id}">
         <label for="name">Your name:</label>
-        <input type="text" id="name" name="name"><br><br>
+        <input type="text" id="name" name="name" required><br><br>
 
         <label for="rating">Rating (1-5):</label>
-        <input type="number" id="rating" name="rating"><br><br>
+        <input type="number" id="rating" name="rating" required><br><br>
 
         <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment"></textarea><br><br>
+        <textarea id="comment" name="comment" required></textarea><br><br>
+
+        <c:if test="${not empty param.reviewMessage}">
+            <span class="success">${param.reviewMessage}</span><br><br>
+        </c:if>
+
+        <c:if test="${not empty param.reviewError}">
+            <span class="error">${param.reviewError}</span><br><br>
+        </c:if>
 
         <input type="submit">
     </form>
