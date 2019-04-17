@@ -1,6 +1,7 @@
 package com.es.phoneshop.model.review;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductReviewServiceImpl implements ProductReviewService {
 
@@ -27,6 +28,18 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     }
 
     @Override
+    public List<ProductReview> getProductReviews() {
+        return productReviewDao.getReviews();
+    }
+
+    @Override
+    public List<ProductReview> getApprovedProductReviews(long productId) {
+        return productReviewDao.getReviews().stream()
+                .filter(ProductReview::isApproved)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ProductReview getProductReview(long productId) {
         ProductReview productReview = new ProductReview();
         productReview.setProductId(productId);
@@ -36,5 +49,11 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     @Override
     public void addProductReview(ProductReview review) {
         productReviewDao.save(review);
+    }
+
+    @Override
+    public void approve(long productReviewId) {
+        ProductReview review = productReviewDao.getReview(productReviewId);
+        review.setApproved(true);
     }
 }

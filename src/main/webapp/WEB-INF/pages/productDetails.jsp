@@ -55,7 +55,7 @@
         <input type="text" id="name" name="name"><br><br>
 
         <label for="rating">Rating (1-5):</label>
-        <input type="text" id="rating" name="rating"><br><br>
+        <input type="number" id="rating" name="rating"><br><br>
 
         <label for="comment">Comment:</label>
         <textarea id="comment" name="comment"></textarea><br><br>

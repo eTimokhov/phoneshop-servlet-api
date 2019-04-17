@@ -34,7 +34,7 @@ public class ProductReviewAddServlet extends HttpServlet {
         review.setComment(comment);
         productReviewService.addProductReview(review);
 
-        response.sendRedirect( request.getContextPath() + "/products/" + productId + "?message=Review added successfully");; //TODO: change path
+        response.sendRedirect( request.getContextPath() + "/products/" + productId + "?message=Review submitted. It'll be shown after approving");
     }
 
     private long getProductId(HttpServletRequest request) {

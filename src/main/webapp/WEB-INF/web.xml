@@ -45,6 +45,16 @@
     <servlet-class>com.es.phoneshop.web.ProductReviewAddServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>productReviews</servlet-name>
+    <servlet-class>com.es.phoneshop.web.ProductReviewsPageServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>approveProductReview</servlet-name>
+    <servlet-class>com.es.phoneshop.web.ProductReviewApproveServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>productList</servlet-name>
     <url-pattern>/products</url-pattern>
@@ -83,6 +93,16 @@
   <servlet-mapping>
     <servlet-name>addProductReview</servlet-name>
     <url-pattern>/reviews/add/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>productReviews</servlet-name>
+    <url-pattern>/reviews</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>approveProductReview</servlet-name>
+    <url-pattern>/reviews/approve/*</url-pattern>
   </servlet-mapping>
 
   <filter>

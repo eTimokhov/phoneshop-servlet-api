@@ -39,4 +39,17 @@ public class ArrayListProductReviewDao implements ProductReviewDao {
                 .filter(p -> p.getProductId() == productId)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProductReview> getReviews() {
+        return reviews;
+    }
+
+    @Override
+    public ProductReview getReview(long reviewId) {
+        return reviews.stream()
+                .filter(p -> p.getId() == reviewId)
+                .findAny()
+                .orElse(null);
+    }
 }

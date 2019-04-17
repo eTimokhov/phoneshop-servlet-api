@@ -39,7 +39,7 @@ public class ProductDetailsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long productId = getProductId(request);
         Product product = productDao.getProduct(productId);
-        List<ProductReview> reviews = productReviewService.getProductReviews(productId);
+        List<ProductReview> reviews = productReviewService.getApprovedProductReviews(productId);
 
         recentlyViewedProductsService.addProduct(request, product);
 

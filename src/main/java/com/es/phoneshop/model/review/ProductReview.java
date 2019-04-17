@@ -9,6 +9,8 @@ public class ProductReview implements Serializable {
     private int rating;
     private String comment;
 
+    private boolean approved;
+
     public ProductReview() {
     }
 
@@ -57,5 +59,13 @@ public class ProductReview implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 }
