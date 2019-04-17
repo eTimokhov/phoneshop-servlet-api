@@ -14,13 +14,6 @@ public class ProductReview implements Serializable {
     public ProductReview() {
     }
 
-    public ProductReview(long productId, String name, int rating, String comment) {
-        this.productId = productId;
-        this.name = name;
-        this.rating = rating;
-        this.comment = comment;
-    }
-
     public long getId() {
         return id;
     }
